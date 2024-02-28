@@ -1,0 +1,72 @@
+
+
+        <!-- Adăugăm un input pentru a trimite și ora selectată -->
+        <input type="hidden" name="SelectedTime" id="selectedTimeInput">
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-6"><div class="container mt-5">
+    <form class="row g-3" action="https://formsubmit.co/laurflorin642@gmail.com" method="POST">
+
+        <input type="text" name="_honey" style="display: none;">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://pasiunepentrumiscare.com/">
+
+        <div class="calculate-form appointment-form-3 mb-20">
+            <form id="appointmentForm" onsubmit="submitForm(event)">
+                <p>
+                    <span class="wpcf7-form-control-wrap" data-name="Addtime">
+                        <select 
+                            class="custom-select form-control" 
+                            aria-required="true" 
+                            aria-invalid="false" 
+                            name="Ora" 
+                            id="oraSelect"
+                        >
+                            <option value="" disabled selected>Selectează o opțiune</option>
+                            <option value="12:00 - 15:00" id="opt1">12:00 - 15:00</option>
+                            <option value="15:00 - 18:00" id="opt2">15:00 - 18:00</option>
+                            <option value="18:00 - 21:00" id="opt3">18:00 - 21:00</option>
+                        </select>
+                    </span>
+                    <i class="fal fa-clock"></i>
+
+                    <!-- Adăugăm un buton de trimitere -->
+                    <button type="submit">Trimite</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+
+        var selectedOption = document.getElementById("oraSelect").value;
+
+        // Verificăm dacă ora a fost deja selectată în ultimele 24 de ore
+        var lastSelectionTimestamp = localStorage.getItem(selectedOption + "-timestamp");
+        var currentTimestamp = new Date().getTime();
+
+        if (lastSelectionTimestamp && (currentTimestamp - lastSelectionTimestamp < 24 * 60 * 60 * 1000)) {
+            alert("Ora a fost deja selectată în ultimele 24 de ore. Te rugăm să alegi altă oră.");
+        } else {
+            // Salvăm ora selectată și timestamp-ul în Local Storage
+            localStorage.setItem(selectedOption + "-timestamp", currentTimestamp);
+
+            // Dezactivăm opțiunea selectată
+            document.getElementById("oraSelect").disabled = true;
+
+            // Adăugăm ora selectată în input-ul ascuns
+            document.getElementById("selectedTimeInput").value = selectedOption;
+
+            // Trimiterea formularului de programare (adaptează aici în funcție de modalitatea de trimitere)
+            document.getElementById("appointmentForm").submit();
+            
+            // Redirecționăm sau reîncărcăm pagina după trimiterea formularului
+            location.reload();  // Aceasta reîncarcă întreaga pagină
+        }
+    }
+</script>
